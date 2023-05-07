@@ -1,9 +1,12 @@
-class Solution {
-    public int missingNumber(int[] nums) {
-        int missing = nums.length;
-        for (int i = 0; i < nums.length; i++) {
-            missing ^= nums[i] ^ i;
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int reverse = 0;
+        for (int i = 1; i <= 32; i++) {
+            reverse = reverse << 1;
+            reverse = reverse | (1 & n);
+            n = n >> 1;
         }
-        return missing;
+        return reverse;
     }
-} // TC: O(n), SC: O(1)
+} // TC: O(1), SC: O(1)
