@@ -3,6 +3,69 @@ URL(GFG): https://practice.geeksforgeeks.org/problems/alien-dictionary/1
 URL (LintCode): https://www.lintcode.com/problem/892
 */
 
+/* Alien Dictionary Problem Statements:
+There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you. 
+You receive a list of words from the dictionary, where words are sorted lexicographically by the rules of this new language. 
+Derive the order of letters in this language.
+
+Return a string of the unique letters in the new alien language sorted in lexicographically increasing order by the new language's rules. 
+If there is no solution, return "". If there are multiple solutions, return any of them.
+
+A string s is lexicographically smaller than a string t if at the first letter where they differ, the letter in s comes before the letter in t in the alien language. 
+If the first min(s.length, t.length) letters are the same, then s is smaller if and only if s.length < t.length.
+
+Input: 
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+Output: "wertf".
+
+Input:
+[
+  "z",
+  "x"
+]
+Output: "zx"
+
+Input:
+[
+  "z",
+  "x",
+  "z"
+]
+Output: "" 
+Explanation: The order is invalid, so return "".
+
+Input:
+[
+  "A",
+  "B",
+  "C"
+]
+Output: "ABC"
+
+Input:
+[
+  "ape"
+  "apes"
+]
+Output: "apes"
+
+Input:
+[
+  "apes"
+  "ape"
+]
+Output: ""
+
+*/
+
+
+
 class  Solution {
     public String alienOrder(String[] words) {
         if (words == null || words.length == 0) return "";
