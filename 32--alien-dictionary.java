@@ -1,58 +1,62 @@
-class Solution {
+/*
+URL(GFG): https://practice.geeksforgeeks.org/problems/alien-dictionary/1
+URL (LintCode): https://www.lintcode.com/problem/892
+*/
+
+class  Solution {
     public String alienOrder(String[] words) {
-        Map<Character, Set<Character>> graph = new HashMap<>();
-        int[] inDegree = new int[26];
-        buildGraph(words, graph, inDegree);
-        
-        String order = topologicalSort(graph, inDegree);
-        return order.length() == graph.size() ? order : "";
-    }
-    
-    private void buildGraph(String[] words, Map<Character, Set<Character>> graph, int[] inDegree) {
-        for (String word : words) {
-            for (char c : word.toCharArray()) {
-                graph.put(c, new HashSet<>());
+        if (words == null || words.length == 0) return "";
+
+        Map<Character, List<Character>> map = new HashMap<>();
+
+        Set<Character> letters = new HashSet<>();
+        for (String s : words){
+            for(char c : s.toCharArray()) {
+                letters.add(c);
             }
         }
-        
+
+        int[] indg = new int[26];
+
         for (int i = 1; i < words.length; i++) {
-            String first = words[i - 1];
-            String second = words[i];
-            int length = Math.min(first.length(), second.length());
-            
-            for (int j = 0; j < length; j++) {
-                char parent = first.charAt(j);
-                char child = second.charAt(j);
-                if (parent != child) {
-                    if (!graph.get(parent).contains(child)) {
-                        graph.get(parent).add(child);
-                        inDegree[child - 'a']++;
+            String prev = words[i-1];
+            String cur = words[i];
+            if (prev.length() == cur.length() + 1) {
+                if (prev.substring(0, cur.length()).equals(cur)) return "";
+            }
+            for (int k = 0; k < Math.min(prev.length(), cur.length()); k++) {
+                Character c1 = prev.charAt(k) ;
+                Character c2 = cur.charAt(k);
+
+                if (c1 != c2) {
+                    if(!map.containsKey(c1)) {
+                        List<Character> list = new ArrayList<>();
+                        map.put(c1, list);
                     }
+                    map.get(c1).add(c2);
+                    indg[c2-'a']++;
                     break;
                 }
             }
         }
-    }
-    
-    private String topologicalSort(Map<Character, Set<Character>> graph, int[] inDegree) {
-        Queue<Character> queue = new LinkedList<>();
-        for (char c : graph.keySet()) {
-            if (inDegree[c - 'a'] == 0) {
-                queue.offer(c);
-            }
+
+        PriorityQueue<Character> pq = new PriorityQueue<>();
+
+        for(Character c : letters){
+            if(indg[c-'a'] == 0) pq.offer(c);
         }
-        
+
         StringBuilder sb = new StringBuilder();
-        while (!queue.isEmpty()) {
-            char c = queue.poll();
+        while(!pq.isEmpty()){
+            Character c = pq.poll();
             sb.append(c);
-            for (char neighbor : graph.get(c)) {
-                inDegree[neighbor - 'a']--;
-                if (inDegree[neighbor - 'a'] == 0) {
-                    queue.offer(neighbor);
-                }
+            List<Character> list = map.get(c);
+            if(list == null) continue;
+            for(Character ch : list){
+                if(--indg[ch-'a'] == 0) pq.offer(ch);
             }
         }
-        return sb.toString();
+
+        return sb.length() == letters.size() ? sb.toString(): "";
     }
 }
