@@ -69,6 +69,13 @@ Input:
 ]
 Output: ""
 
+Input:
+[
+  "ape"
+  "apes"
+]
+Output: "aeps"
+
 */
 
 
