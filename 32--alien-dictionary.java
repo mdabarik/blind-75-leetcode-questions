@@ -50,10 +50,17 @@ Output: "ABC"
 
 Input:
 [
-  "ape"
-  "apes"
+  "abc"
+  "ab"
 ]
-Output: "apes"
+Output: ""
+
+Input:
+[
+  "ab"
+  "abc"
+]
+Output: "abc"
 
 Input:
 [
