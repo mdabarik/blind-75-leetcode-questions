@@ -82,27 +82,16 @@ Output: ""
 */
 
 
-
-class  Solution {
+public class Solution {
     public String alienOrder(String[] words) {
         if (words == null || words.length == 0) return "";
 
         Map<Character, List<Character>> graph = new HashMap<>();
-
-        Set<Character> letters = new HashSet<>();
-        for (String word : words) {
-            for (char ch : word.toCharArray())
-                letters.add(ch);
-        }
-
         int[] indegree = new int[26];
-
         for (int i = 1; i < words.length; i++) {
             String prev = words[i - 1];
             String curr = words[i];
-            if ((prev.length() == curr.length() + 1) && prev.substring(0, curr.length()).equals(curr)) {
-                return "";
-            }
+            if (prev.length() == curr.length() + 1 && prev.substring(0, curr.length()).equals(curr)) return "";
             for (int k = 0; k < Math.min(prev.length(), curr.length()); k++) {
                 char c1 = prev.charAt(k);
                 char c2 = curr.charAt(k);
@@ -116,27 +105,31 @@ class  Solution {
             }
         }
 
+        Set<Character> uniqueCh = new HashSet<>();
+        for (String word : words) {
+            for (char ch : word.toCharArray()) {
+                uniqueCh.add(ch);
+            }
+        }
+
         PriorityQueue<Character> minHeap = new PriorityQueue<>();
-
-        for (char letter : letters) {
-            if (indegree[letter - 'a'] == 0) {
+        for (char letter : uniqueCh) {
+            if (indegree[letter - 'a'] == 0)
                 minHeap.add(letter);
-            }
         }
 
-        String order = "";
-
+        String topSort = "";
         while (!minHeap.isEmpty()) {
-            char curr = minHeap.poll();
-            order += curr;
-            if (graph.get(curr) == null) continue;
-            for (char neighbor : graph.get(curr)) {
-                indegree[neighbor - 'a']--;
-                if (indegree[neighbor - 'a'] == 0) 
+            char currCh = minHeap.poll();
+            topSort += currCh;
+            if (graph.get(currCh) == null) continue;
+            for (char neighbor : graph.get(currCh)) {
+                if (--indegree[neighbor - 'a'] == 0) {
                     minHeap.add(neighbor);
+                }
             }
         }
 
-        return letters.size() == order.length() ? order : "";
+        return topSort.length() == uniqueCh.size() ? topSort : "";
     }
 }
