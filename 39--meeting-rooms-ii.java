@@ -10,16 +10,18 @@
  */
 
 public class Solution { // lintCode
-    public boolean canAttendMeetings(List<Interval> intervals) {
+    public int minMeetingRooms(List<Interval> intervals) {
         Collections.sort(intervals, (a, b) -> a.start - b.start);
-        int prev = 0;
-        for (int curr = 1; curr < intervals.size(); curr++) {
-            int endTime = intervals.get(prev).end;
-            int startTime = intervals.get(curr).start;
-            if (endTime > startTime) {
-                return false;
+        PriorityQueue<Interval> minHeap = new PriorityQueue<>((a, b) -> a.end - b.end);
+        minHeap.add(intervals.get(0));
+        for (int i = 1; i < intervals.size(); i++) {
+            int end = minHeap.peek().end;
+            int start = intervals.get(i).start;
+            if (end <= start) {
+                minHeap.poll();
             }
+            minHeap.add(intervals.get(i));
         }
-        return true;
+        return minHeap.size();
     }
-} // TC: O(n log n + n), SC: O(1)
+} // TC: O(n log n), SC: O(n)
