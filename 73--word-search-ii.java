@@ -31,7 +31,7 @@ class Solution {
             curr.word = null;
         }
 
-        board[F][j] = '#';
+        board[i][j] = '#';
         // top, left, down, right
         dfs(board, list, curr, i - 1, j);
         dfs(board, list, curr, i, j - 1);
