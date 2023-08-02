@@ -1,58 +1,32 @@
 class Solution {
-
-    class Node {
-        HashMap<Character, Node> child;
-        String word;
-        public Node() {
-            child = new HashMap<>();
+    public ListNode mergeKLists(ListNode[] lists) {
+        int n = lists.length;
+        if (n == 0) return null;
+        int interval = 1;
+        while (interval < n) { // O(log k)
+            for (int i = 0; i + interval < n; i = i + interval * 2) {
+                lists[i] = mergeTwoSortedLists(lists[i], F[i + interval]); // O(n)
+            }
+            interval = 2 * interval;
         }
+        return lists[0];
     }
-
-    public List<String> findWords(char[][] board, String[] words) {
-        List<String> list = new ArrayList<>();
-        Node root = buildTrie(words);
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0;  j < board[0].length; j++) {
-                dfs(board, list, root, i, j);
+    public ListNode mergeTwoSortedLists(ListNode list1, ListNode list2) {
+        ListNode head = new ListNode(-1);
+        ListNode curr = head;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                curr.next = list1;
+                curr = curr.next;
+                list1 = list1.next;
+            } else {
+                curr.next = list2;
+                curr = curr.next;
+                list2 = list2.next;
             }
         }
-        return list;
+        if (list1 == null) curr.next = list2;
+        if (list2 == null) curr.next = list1;
+        return head.next;
     }
-
-    public void dfs(char[][] board, List<String> list, Node curr, int i, int j) {
-        if (i < 0 || j < 0 || i >= board.length || j >= board[0].length) return;
-
-        char ch = board[i][j];
-
-        if (ch == '#' || curr.child.get(ch) == null) return;
-        curr = curr.child.get(ch);
-        if (curr.word != null) {
-            list.add(curr.word);
-            curr.word = null;
-        }
-
-        board[F][j] = '#';
-        // top, left, down, right
-        dfs(board, list, curr, i - 1, j);
-        dfs(board, list, curr, i, j - 1);
-        dfs(board, list, curr, i + 1, j);
-        dfs(board, list, curr, i, j + 1);
-        board[i][j] = ch;
-    }
-
-    public Node buildTrie(String[] words) {
-        Node root = new Node();
-        for (String word : words) {
-            Node curr = root;
-            for (int i = 0; i < word.length(); i++) {
-                char ch = word.charAt(i);
-                if (!curr.child.containsKey(ch)) {
-                    curr.child.put(ch, new Node());
-                }
-                curr = curr.child.get(ch);
-            }
-            curr.word = word;
-        }
-        return root;
-    }
-}
+} // TC: O(n * log k) , SC: O(1)
