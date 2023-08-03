@@ -1,16 +1,17 @@
 class Solution {
-    public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-        LinkedList<int[]> merged = new LinkedList<>();
-        merged.add(intervals[0]);
-        for (int i = 1; i < intervals.length; i++) {
-            int[] currInterval = intervals[i];
-            if (merged.getLast()[1] < currInterval[0]) {
-                merged.add(currInterval);
-            } else {
-                merged.getLast()[1] = Math.max(merged.getLast()[1], currInterval[1]);
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
+        int count = 1;
+        int prev = 0;
+        for (int curr = 1; curr < intervals.length; curr++) {
+            if (intervals[prev][1] <= intervals[curr][0]) {
+                count++;
+                prev = curr;
             }
         }
-        return merged.toArray(new int[merged.size()][2]);
+        return (intervals.length - count);
     }
-} // TC: O(n log n + n) SC: O(1)
+} 
+// TC: O(n log n + n), SC: O(1)
+
+// 1,4 -> 4,6 -> 3,7 -> 6,8
