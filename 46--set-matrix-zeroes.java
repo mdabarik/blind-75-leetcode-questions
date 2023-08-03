@@ -13,7 +13,7 @@ class Solution {
             if (matrix[r][0] == 0) {
                 hasFirstCol = true;
                 break;
-            }F
+            }
         }
         for (int r = 1; r < matrix.length; r++) { // preprocessing
             for (int c = 1; c < matrix[0].length; c++) {
