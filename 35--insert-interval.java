@@ -16,7 +16,7 @@ class Solution {
             newInterval[1] = endTime;
             i++;
         }
-        result.add(newInterval);F
+        result.add(newInterval);
         while (i < n) {
             result.add(intervals[i]);
             i++;
