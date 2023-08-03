@@ -5,7 +5,7 @@ class Solution {
         int interval = 1;
         while (interval < n) { // O(log k)
             for (int i = 0; i + interval < n; i = i + interval * 2) {
-                lists[i] = mergeTwoSortedLists(lists[i], F[i + interval]); // O(n)
+                lists[i] = mergeTwoSortedLists(lists[i], lists[i + interval]); // O(n)
             }
             interval = 2 * interval;
         }
