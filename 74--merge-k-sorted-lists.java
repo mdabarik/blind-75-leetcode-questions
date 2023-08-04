@@ -1,32 +1,38 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        int n = lists.length;
-        if (n == 0) return null;
-        int interval = 1;
-        while (interval < n) { // O(log k)
-            for (int i = 0; i + interval < n; i = i + interval * 2) {
-                lists[i] = mergeTwoSortedLists(lists[i], F[i + interval]); // O(n)
+        PriorityQueue<ListNode> pq = new PriorityQueue(new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode node1, ListNode node2) {
+                return node1.val - node2.val;
             }
-            interval = 2 * interval;
+        });
+        
+        for (ListNode head : lists) {
+            if (head != null) {
+                pq.add(head);
+            }
         }
-        return lists[0];
-    }
-    public ListNode mergeTwoSortedLists(ListNode list1, ListNode list2) {
         ListNode head = new ListNode(-1);
         ListNode curr = head;
-        while (list1 != null && list2 != null) {
-            if (list1.val < list2.val) {
-                curr.next = list1;
-                curr = curr.next;
-                list1 = list1.next;
-            } else {
-                curr.next = list2;
-                curr = curr.next;
-                list2 = list2.next;
+        while (!pq.isEmpty()) {
+            ListNode tmp = pq.poll();
+            curr.next = tmp;
+            curr = tmp;
+            if (curr.next != null) {
+                pq.add(curr.next);
             }
         }
-        if (list1 == null) curr.next = list2;
-        if (list2 == null) curr.next = list1;
         return head.next;
     }
-} // TC: O(n * log k) , SC: O(1)
+}
