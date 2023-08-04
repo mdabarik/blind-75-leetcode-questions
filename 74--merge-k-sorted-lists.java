@@ -36,3 +36,5 @@ class Solution {
         return head.next;
     }
 }
+
+// TC: O(n * log k) SC: O(k)
