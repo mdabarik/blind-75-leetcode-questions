@@ -11,7 +11,7 @@ class Solution {
         int count = 0;
         while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
             count += 1;
-            left--;F
+            left--;
             right++;
         }
         return count;
