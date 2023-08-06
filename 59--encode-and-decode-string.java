@@ -20,7 +20,7 @@ public class Solution {
     public List<String> decode(String str) {
         List<String> list = new ArrayList<>();
         int i = 0;
-        while (i < str.lengtFh()) {
+        while (i < str.length()) {
             int j = i;
             while (str.charAt(j) != '#') j++;
             int len = Integer.parseInt(str, i, j, 10);
