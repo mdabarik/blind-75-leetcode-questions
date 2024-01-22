@@ -10,6 +10,6 @@ public class Solution {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 } // TC: O(n), SC: O(1)
